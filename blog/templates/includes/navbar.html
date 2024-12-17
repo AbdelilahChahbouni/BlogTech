@@ -1,0 +1,140 @@
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #eee;" >
+    <div class="container">
+      <!-- Brand -->
+      <a class="navbar-brand" href="{% url 'home' %}">BlogTech</a>
+  
+      <!-- Toggler for mobile view -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-mdb-toggle="collapse"
+        data-mdb-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+  
+      <!-- Navbar content -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <!-- Left Links -->
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'about' %}">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+          </li>
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Posts</a>
+          </li>
+          {% endif %}
+        </ul>
+        {% if request.user.is_authenticated %}
+        <!-- Search Section -->
+        <form class="d-flex mx-auto" style="width: 50%;" method="POST">
+          {% csrf_token %}
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            name="q"
+            value="{{ query|default:'' }}"
+            id="tags"
+          >
+          <button class="btn btn-outline-primary" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        {% endif %}
+  
+        <!-- Right Icons -->
+        
+        <ul class="navbar-nav d-flex align-items-center">
+            {% if not request.user.is_authenticated %} 
+            <li class="nav-item me-3">
+                <a class="nav-link" href="{% url 'login' %}" >
+                  SignIn
+                </a>
+              </li>
+          {% else %}
+          <li class="nav-item me-3">
+            <a class="nav-link" href="{% url 'create_post' %}" title="Create New Post">
+              <i class="fas fa-plus-circle fa-lg"></i>
+            </a>
+          </li>
+  
+          <!-- Notifications Dropdown -->
+          <li class="nav-item dropdown me-3">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="notificationDropdown"
+              role="button"
+              data-mdb-toggle="dropdown"
+              aria-expanded="false"
+              title="Notifications"
+            >
+              <i class="fas fa-bell"></i>
+              <span class="badge rounded-pill badge-notification bg-danger">{{ unread_notifications_count }}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+                {% for notification in request.user.notifications.all %}
+              <li><a class="dropdown-item" href="{% url 'mark_notification_as_read' notification.id %}">{{ notification.message }}</a></li>
+              <li><hr class="dropdown-divider"></li>
+              {% empty %}
+              <li><span class="dropdown-item">No notifications</span></li>
+              {% endfor %}
+            </ul>
+          </li>
+  
+          <!-- User Account Dropdown -->
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="userDropdown"
+              role="button"
+              data-mdb-toggle="dropdown"
+              aria-expanded="false"
+              title="Account"
+            >
+              <i class="fas fa-user-circle fa-lg"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="{% url 'edite_profile' %}">Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'author_posts' %}">My Posts</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item " href="#">
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" style="border:none ; background:none ; margin-top: 5pxpx">Logout</button> 
+                    </form>
+
+                </a>
+              </li>
+            </ul>
+          {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  {% block js %}
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+  <script>
+  $( function() { 
+    $( "#tags" ).autocomplete({
+      source: "{% url 'auto_complete' %}"
+    });
+  } );
+  </script>
+
+  {% endblock js %}

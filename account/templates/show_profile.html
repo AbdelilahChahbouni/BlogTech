@@ -1,0 +1,213 @@
+
+{% extends "base.html" %}
+{% block title %}{{ author.username }}'s Profile{% endblock title %}
+
+{% block content %}
+<style>
+    .profile-container {
+        max-width: 600px;
+        margin: 50px auto;
+        font-family: Arial, sans-serif;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        background-color: #fff;
+    }
+
+    .profile-header {
+        text-align: center;
+        padding: 20px;
+        background-color: #f4f4f9;
+    }
+
+    .profile-header img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+        border: 2px solid #ddd;
+    }
+
+    .profile-header h1 {
+        font-size: 24px;
+        color: #333;
+        margin: 10px 0;
+    }
+
+    .profile-header p {
+        font-size: 16px;
+        color: #555;
+    }
+    .profile-stats {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+    }
+
+    .profile-stats div {
+        margin: 0 20px;
+        text-align: center;
+    }
+
+    .profile-stats div span {
+        display: block;
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .profile-stats div p {
+        margin: 5px 0 0;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .profile-actions {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .follow-btn, .unfollow-btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .follow-btn {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .follow-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .unfollow-btn {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .unfollow-btn:hover {
+        background-color: #b02a37;
+    }
+
+    .profile-posts {
+        padding: 20px;
+    }
+
+    .profile-posts h2 {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .post-item {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
+
+    .post-item:last-child {
+        border-bottom: none;
+    }
+
+    .post-item a {
+        font-size: 18px;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .post-item a:hover {
+        text-decoration: underline;
+    }
+
+    .post-item span {
+        display: block;
+        font-size: 14px;
+        color: #555;
+    }
+</style>
+
+<div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <img src="{{ profile.image.url }}" alt="{{ profile.user.username }}">
+        <h1>{{ author.username }}</h1>
+        <p>Joined: {{ profile.user.date_joined|date:"F d, Y" }}</p>
+    </div>
+    <!-- Followers and Following Section -->
+    <div class="profile-stats">
+        <div>
+            <span>{{ author.follwers.count }}</span>
+                <p>Followers</p>
+        </div>
+        <div>
+                <span>{{ author.Following.count }}</span>
+                <p>Following</p>
+        </div>
+        <div>
+                <span>{{ author_posts.count }}</span>
+                <p>Posts</p>
+        </div>
+        </div>
+    </div>
+
+    <!-- Follow/Unfollow Actions -->
+    <div class="profile-actions">
+        <form method="post" action="{% url 'follow_unfollow' author.id %}">
+            {% csrf_token %}
+            {% if request.user != author %}
+                {% if is_following %}
+                    <button type="submit" name="action" value="unfollow" class="unfollow-btn">Unfollow</button>
+                {% else %}
+                    <button type="submit" name="action" value="follow" class="follow-btn">Follow</button>
+                {% endif %}
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Posts by User -->
+    <div class="profile-posts">
+        <h2>Posts by {{ author.username }}</h2>
+        {% if author_posts %}
+            {% for post in author_posts %}
+                <div class="post-item">
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    <span>Published on {{ post.publish|date:"F d, Y" }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No posts yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+<style>
+    img {
+        width: 120px;
+        height: 120px;
+    }
+    a {
+        text-decoration: none;
+        width: 100px;
+        height: 30px ;
+        padding: 10px;
+        background-color: cyan;
+        color: white;
+
+    }
+</style>

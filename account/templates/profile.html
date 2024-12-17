@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Edite Profile{% endblock title %}
+
+
+{% block content %}  
+
+<style>
+    /* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Container Styling */
+.box {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Container */
+.profile-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+/* Left Side: Profile Display */
+.profile-display {
+    flex: 1;
+    min-width: 280px;
+    background-color: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-display .display-image {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.profile-display .display-image img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #007bff;
+}
+
+.profile-display .display-info p {
+    font-size: 0.95rem;
+    margin: 0.5rem 0;
+}
+
+.profile-display .display-info strong {
+    color: #007bff;
+}
+
+/* Right Side: Profile Edit */
+.profile-edit {
+    flex: 2;
+    min-width: 300px;
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-edit h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #007bff;
+}
+
+.profile-edit .edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.profile-edit .save-button {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-edit .save-button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-container {
+        flex-direction: column;
+    }
+
+    .profile-display,
+    .profile-edit {
+        min-width: 100%;
+    }
+}
+
+</style>
+<div class="box">
+    <div class="profile-container">
+        <!-- Left Side: Display User Info -->
+        <div class="profile-display">
+            <!-- <h2>User Information</h2> -->
+            <div class="display-image">
+                <img src="{{ profile_form.instance.image.url }}" alt="User Image" id="user-image">
+            </div>
+            <div class="display-info">
+                <p><strong>First Name:</strong> <span id="display-first-name">{{ user_form.first_name.value }}</span></p>
+                <p><strong>Last Name:</strong> <span id="display-last-name">{{ user_form.last_name.value }}</span></p>
+                <p><strong>Age:</strong> <span id="display-age">{{ profile_form.age.value }}</span></p>
+                <p><strong>Email:</strong> <span id="display-email">{{ user_form.email.value }}</span></p>
+            </div>
+            <img src="" alt="">
+        </div>
+        
+        <!-- Right Side: Edit User Info -->
+        <div class="profile-edit">
+            <h2> User Profile </h2>
+            <form method="post" enctype="multipart/form-data" class="edit-form">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                {{ profile_form.as_p }}
+
+                <button type="submit" class="save-button" value="save change">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content%}

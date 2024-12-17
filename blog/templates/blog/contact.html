@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} My Blog | Contact  {% endblock title %}
+{% block content %}     
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <p>{{ page.description }}</p>
+                        {% comment %} {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %} {% endcomment %}
+                        <div class="my-5">
+                            <form id="contactForm" method="post" data-sb-form-api-token="API_TOKEN" action="{% url 'contact_user' %}">
+                             {% csrf_token %}
+                                <div class="form-floating">
+                                    <input class="form-control" name="name" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <label for="name">Name</label>
+                                    <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" name="email" id="email" type="email" placeholder="Enter your email..." data-sb-validations="required,email" />
+                                    <label for="email">Email address</label>
+                                    <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
+                                    <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+                                </div>
+                    
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="message" name="message" placeholder="Enter your message here..." style="height: 12rem" data-sb-validations="required"></textarea>
+                                    <label for="message">Message</label>
+                                    <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                                </div>
+                                <br />
+                                <!-- Submit success message-->
+                                <!---->
+                                <!-- This is what your users will see when the form-->
+                                <!-- has successfully submitted-->
+                                <div class="d-none" id="submitSuccessMessage">
+                                    <div class="text-center mb-3">
+                                        <div class="fw-bolder">Form submission successful!</div>
+                                        To activate this form, sign up at
+                                        <br />
+                                        <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                                    </div>
+                                </div>
+                                <!-- Submit error message-->
+                                <!---->
+                                <!-- This is what your users will see when there is-->
+                                <!-- an error submitting the form-->
+                                <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                                <!-- Submit Button-->
+                                <button class="btn btn-primary text-uppercase " id="submitButton" type="submit">Send</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <style> 
+            /* General Styles */
+
+
+p{
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Form Fields */
+.form-floating {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-floating input,
+.form-floating textarea {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px 20px;
+    font-size: 16px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-floating input:focus,
+.form-floating textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.form-floating label {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    font-size: 14px;
+    color: #666;
+    transition: all 0.2s ease-in-out;
+    pointer-events: none;
+}
+
+.form-floating input:focus + label,
+.form-floating textarea:focus + label,
+.form-floating input:not(:placeholder-shown) + label,
+.form-floating textarea:not(:placeholder-shown) + label {
+    top: -10px;
+    font-size: 12px;
+    color: #007bff;
+}
+
+/* Button Styling */
+button#submitButton {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button#submitButton:hover {
+    background-color: #0056b3;
+}
+
+/* Success and Error Messages */
+.alert {
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+#submitSuccessMessage,
+#submitErrorMessage {
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+#submitSuccessMessage .fw-bolder {
+    color: #28a745;
+}
+
+#submitErrorMessage {
+    color: #dc3545;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .form-floating input,
+    .form-floating textarea {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+
+    button#submitButton {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
+}
+
+        </style>
+{% endblock content %}
+

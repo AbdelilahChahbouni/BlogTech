@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      - DEBUG=1
+      - DATABASE_URL=postgres://blog_user:blog123@db:5432/blog_db
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: blog_user
+      POSTGRES_PASSWORD: blog123
+      POSTGRES_DB: blog_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
+
+

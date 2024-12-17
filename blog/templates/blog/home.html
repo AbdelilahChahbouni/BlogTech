@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} My Blog | Home {% endblock title %}
+{% block content %}
+<div style="margin-top: 40px;">
+    {% for post in page_obj %}
+       
+    <div class="container px-4 px-lg-5"  >
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <a href="{{post.get_absolute_url}}">
+                        <h2 class="post-title">{{ post.title }}</h2>
+                        <h3 class="post-subtitle">{{post.body|truncatewords:30}}</h3>
+                    </a>
+                    <p class="post-meta">
+                        posted By 
+                        <a href="{% url 'show_profile' post.author.id %}">{{post.author|capfirst|default:post.author.last_name}}</a>
+                        {{ post.publish }} 
+                    </p>
+                    <span><p><strong>Views:</strong> {{ post.views }}</p></span>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+                <!-- Pager-->
+                
+            </div>
+        </div>
+    </div>
+     
+<style>
+/* Post Preview Styles */
+.post-preview {
+
+margin-bottom: 2rem;
+padding: 1.5rem;
+border: 1px solid #ddd; /* Subtle border */
+border-radius: 10px; /* Rounded corners */
+background-color: #f8f9fa; /* Light background */
+transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.post-preview:hover {
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect on hover */
+transform: translateY(-5px); /* Subtle lift on hover */
+}
+
+.post-title {
+font-size: 1.75rem;
+font-weight: 700;
+color: #343a40; /* Darker color for the title */
+margin-bottom: 0.5rem;
+text-decoration: none;
+}
+
+.post-title:hover {
+color: #007bff; /* Blue hover effect */
+}
+
+.post-subtitle {
+font-size: 1.2rem;
+font-weight: 400;
+color: #6c757d; /* Muted color for subtitle */
+margin-bottom: 1rem;
+}
+
+.post-meta {
+font-size: 0.875rem;
+color: #6c757d; /* Muted text color */
+margin-top: 0.5rem;
+}
+
+.post-meta a {
+color: #007bff; /* Link color */
+text-decoration: none;
+font-weight: 600;
+}
+
+.post-meta a:hover {
+text-decoration: underline; /* Underline on hover */
+}
+
+span p {
+font-size: 0.875rem;
+color: #495057; /* Slightly darker muted color */
+margin-top: 0.5rem;
+}
+
+/* Divider Style */
+hr.my-4 {
+border: 0;
+border-top: 1px solid #ddd;
+margin: 2rem 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+.post-title {
+font-size: 1.5rem;
+}
+
+.post-subtitle {
+font-size: 1rem;
+}
+
+.post-preview {
+padding: 1rem;
+}
+}
+
+</style>
+{% endfor %}
+</div>
+
+    <div class="pagination pagination-lg justify-content-center" >
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+            {% endif %}
+    
+            <li class="page-item active"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+    
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock content %}
+
+

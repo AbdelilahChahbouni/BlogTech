@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Login{%endblock%}
+
+{% block content %}
+
+<div class="login-container">
+    
+        <h2>Login</h2>
+        {% if form.errors %}
+                <p>the password or username is not correct please try again </p>
+        {% endif %}
+        <form method="post" action="{% url 'login' %}" class="login-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="hidden"  name="next" value="{{ request.GET.next }}" >
+            <button type="submit" class="login-button">Login</button> 
+        
+                <a href="{% url 'password_reset'%}">Forget Password</a>
+                <a href="{% url 'register' %}" class="login-btn">Create Account</a>
+            
+        </form>
+    
+</div>
+<style>
+    .login-container {
+   width: 40%;
+   margin: 100px auto;
+   padding: 20px;
+   background-color: #f9f9f9;
+   border-radius: 8px;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   font-family: Arial, sans-serif;
+}
+
+.login-container h2 {
+   text-align: center;
+   color: #333;
+   margin-bottom: 20px;
+}
+
+.login-form {
+   display: flex;
+   flex-direction: column;
+   gap: 15px;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+   width: 100%;
+   padding: 10px;
+   border: 1px solid #ccc;
+   border-radius: 5px;
+   font-size: 16px;
+}
+
+.login-form a {
+    text-align: center;
+}
+
+
+
+.login-button {
+   background-color: #4CAF50;
+   color: white;
+   padding: 10px;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   font-size: 16px;
+   text-align: center;
+   width: 50%;
+   margin: auto;
+}
+
+.login-button:hover {
+   background-color: #45a049;
+}
+</style>
+
+{% endblock content %}

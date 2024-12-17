@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Update Post{% endblock title %}
+
+{% block content %}
+<div class="update-post-container">
+    <h2>Update Post</h2>
+    <form method="post" enctype="multipart/form-data" class="update-post-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="update-button">Update Post</button>
+    </form>
+</div>
+<style>
+    .update-post-container {
+    width: 60%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.update-post-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.update-post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.update-post-form input[type="text"],
+.update-post-form textarea,
+.update-post-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.update-post-form textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.update-post-form input[type="file"] {
+    border: none;
+}
+
+.update-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    width: 50%;
+    margin: auto;
+}
+
+.update-button:hover {
+    background-color: #45a049;
+}
+
+</style>
+{% endblock content %}
+
+

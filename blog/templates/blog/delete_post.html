@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Post{% endblock title %}
+
+{% block content %}
+<div class="delete-post-container">
+    <h2>Are you sure you want to delete this post?</h2>
+    <p><strong>Title:</strong> {{ post.title }}</p>
+    <p><strong>Author:</strong> {{ post.author.username }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="delete-button">Delete</button>
+        <a href="{% url 'author_posts' %}" class="cancel-button">Cancel</a>
+    </form>
+</div>
+
+<style>
+    .delete-post-container {
+    width: 50%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.delete-post-container h2 {
+    color: #d9534f;
+    margin-bottom: 20px;
+}
+
+.delete-post-container p {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.delete-button {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.delete-button:hover {
+    background-color: #c9302c;
+}
+
+.cancel-button {
+    margin-left: 10px;
+    background-color: #5bc0de;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.cancel-button:hover {
+    background-color: #31b0d5;
+}
+
+</style>
+{% endblock content %}

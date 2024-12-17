@@ -1,0 +1,118 @@
+<!-- <style>
+    .mybtn{
+        
+        padding: 10px 20px;
+        background-color: #4CAF50; /* Green */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+     .mybtn:hover {
+        background-color: #45a049; /* Darker green */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .mybtn:active {
+        background-color: #3e8e41; /* Even darker green */
+        transform: scale(0.98); /* Slight shrink effect */
+    }
+
+    .mybtn:focus {
+        outline: none;
+        box-shadow: 0px 0px 5px 2px #4CAF50;
+    }
+    .unread {
+        font-weight: bold;
+        background-color: #f9f9f9;
+        color: red
+    }
+</style> -->
+
+<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="index.html">Blogger</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            {% if request.user.is_authenticated %}
+            <form class="d-flex" method="get" style="margin-left: 40px;" action="{% url 'home' %}" >
+                <input class="form-control me-2" type="search" aria-label="Search" name="q" placeholder="Search posts..." value="{{ query|default:'' }}">
+                <button class="mybtn" type="submit">Search</button>
+            </form>
+            {% endif %}
+            <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'home' %}">Posts</a></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'about' %}">About</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'contact' %}">Contact</a></li>
+                
+            </ul>
+            
+            
+        </div>
+        
+        <div style="margin-left: 40px;">
+            <div class="dropdown" style="background-color: #10192B;">
+                <button class="btn  dropdown-toggle" style="color: white;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                  Account
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                {% if user.is_authenticated %}
+                    
+                    <li><a class="dropdown-item " href="#">User : {{ request.user.first_name|default:request.user.username}}</a></li>
+                    <li><a class="dropdown-item " href="{% url 'edite_profile' %}">Profile</a></li>
+                    <li><a class="dropdown-item " href="{% url 'author_posts' %}">My Posts</a></li>
+                    <li><a class="dropdown-item " href="#">
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" style="border:none ; background:none ; color:white ; margin-top: 5pxpx">Logout</button> 
+                        </form>
+        
+                    </a>
+                </li>
+
+                {% else %}
+                    <li><a class="dropdown-item" href="{% url 'register'%}">Register</a></li>
+                    <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+
+                {% endif %}
+                 
+                  
+                  <li><hr class="dropdown-divider"></li>
+                  
+                </ul>
+              </div>
+        </div>
+        {% if request.user.is_authenticated %}
+        <a class="mybtn" href="{% url 'create_post' %}" style="margin-left: 30px; margin-right:20px">New Post</a>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+        <!-- dropdown for notification -->
+        <div class="dropdown">
+            <a href="#" class="nav-link dropdown-toggle" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-bell" style="color:white"></i>
+                <span class="badge bg-danger">{{ unread_notifications_count }}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                {% for notification in request.user.notifications.all %}
+                    <li >
+                        <a class="dropdown-item {% if not notification.is_read %}unread{% endif %}" href="{% url 'mark_notification_as_read' notification.id %}">{{ notification.message }}</a>
+                    </li>
+                {% empty %}
+                    <li><span class="dropdown-item">No notifications</span></li>
+                {% endfor %}
+        {% endif %}
+            </ul>
+        </div>
+        
+    </div>
+    
+   
+</nav>

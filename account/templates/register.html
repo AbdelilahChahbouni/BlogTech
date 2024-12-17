@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %} Create an Account {% endblock title %}
+
+
+{% block content %}
+{% if request.user.is_authenticated %}
+        <h1> You Are already Have Account </h1>
+        <a href="{% url 'dashboard'%}">Go to Dashboard</a>
+{% else %}
+    <div class="container-reg">
+        <h2>Register</h2>
+        <form method="post" class="reg-form" >
+            {% csrf_token %}
+            {% for field in user_form %}
+                {% if field.errors %}
+                    <div class="error">{{ field.errors }}</div>
+                {% endif %}
+            {% endfor %}
+             {{ user_form.as_p }} 
+            <button type="submit" class="reg-button">Register</button>
+        </form>
+        <p style="text-align: center">Already have an account? <a style="text-decoration: none ; color: blue;" href="{% url 'login' %}">Log in</a></p>
+    </div>
+    <style>
+        .container-reg {
+       width: 40%;
+       margin: 50px auto;
+       padding: 20px;
+       background-color: #f9f9f9;
+       border-radius: 8px;
+       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+       font-family: Arial, sans-serif;
+    }
+    
+    .container-reg h2 {
+       text-align: center;
+       color: #333;
+       margin-bottom: 20px;
+    }
+    
+    .reg-form {
+       display: flex;
+       flex-direction: column;
+       gap: 15px;
+    }
+    
+    .reg-form input[type="text"],
+    .reg-form input[type="password"],
+    .reg-form input[type="email"] {
+       width: 100%;
+       padding: 10px;
+       border: 1px solid #ccc;
+       border-radius: 5px;
+       font-size: 16px;
+    }
+    
+    .reg-form a {
+        text-align: center;
+    }
+    
+    
+    
+    .reg-button {
+       background-color: #4CAF50;
+       color: white;
+       padding: 10px;
+       border: none;
+       border-radius: 5px;
+       cursor: pointer;
+       font-size: 16px;
+       text-align: center;
+       width: 50%;
+       margin: auto;
+    }
+    
+    .reg-button:hover {
+       background-color: #45a049;
+    }
+    </style>
+{% endif %}
+{% endblock content%}

@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} {{post.title}} {% endblock title %}
+{% block content  %}
+
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5 mt5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <p>{{ post.title }}</p>
+                        
+                        <a href="#!"><img class="img-fluid" src="{{  post.post_image.url }}" alt="..." /></a>
+                        <span class="caption text-muted">To go places and do things that have never been done before – that’s what living is all about.</span>
+                        
+                            Placeholder text by
+                            <a href="http://spaceipsum.com/">Space Ipsum</a>
+                            &middot; Images by
+                            <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>
+                        </p>
+                        
+
+                        <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <form method="post"  class="d-inline" id="like-form" data-post-id="{{ post.id }}">
+                              {% csrf_token %}
+                              <button 
+                                type="submit" 
+                                id="like-button"
+                                class="btn btn-sm btn-outline-primary d-flex align-items-center">
+                                <i class="{% if request.user in post.likes.all %}fas fa-heart{% else %}far fa-heart{% endif %}" id="like-icon"></i>
+                                Like
+                              </button>
+                            </form>
+                            <span class="text-muted" id="like-count">{{ post.likes_count }} Likes</span>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+       
+          
+          </article>
+        <!-- Comment Section -->
+        <section id="comments-section">
+          <div class="container my-5 py-5">
+            <div class="row d-flex justify-content-center">
+              <div class="col-md-12 col-lg-10 col-xl-8">
+                <div class="card">
+                  <div class="card-body">
+                    {% if comments %}
+                    {% for comment in comments %}
+                    <div class="d-flex flex-start align-items-center">
+                      <img class="rounded-circle shadow-1-strong me-3"
+                        src="{{ comment.user.profile.image.url }}" alt="avatar" width="60"
+                        height="60" />
+                      <div>
+                        <h6 class="fw-bold text-primary mb-1">{{ comment.user.username }}</h6>
+                        <p class="text-muted small mb-0">
+                          {{ comment.created_at|date:"F j, Y, g:i a" }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <p class="mt-3 mb-4 pb-2">
+                      {{ comment.body }}
+                    </p>
+
+                    {% endfor %}
+                    {% endif %}
+                  </div>
+                  
+                  <!-- Form Section -->
+                  <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                    <form method="POST"  id="comment-form" data-post-id-comment="{{ post.id }}" >
+                      {% csrf_token %}
+                      <div class="d-flex flex-start w-100">
+                        <img class="rounded-circle shadow-1-strong me-3"
+                          src="{{ request.user.profile.image.url }}" alt="test" width="40"
+                          height="40" />
+                        <div data-mdb-input-init class="form-outline w-100">
+                          <textarea 
+                            class="form-control" 
+                            id="body-form" 
+                            name="body" 
+                            rows="4"
+                            style="background: #fff;" 
+                            placeholder="Write your comment here..."></textarea>
+                          <label class="form-label" for="textAreaExample">Message</label>
+                        </div>
+                      </div>
+                      <div class="float-end mt-2 pt-1">
+                        <button 
+                          type="submit" 
+                          class="btn btn-primary btn-sm">Post Comment</button>
+                      </div>
+                    </form>
+                  </div>
+                  <!-- End of Form Section -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+<style>
+  /* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Article Styling */
+article.mb-4 {
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background-color: #ffffff; /* White background for clarity */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+article img.img-fluid {
+    max-width: 100%;
+    height: auto;
+    margin: 1rem 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+article .caption.text-muted {
+    display: block;
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Card Footer */
+.card-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 0 0 10px 10px;
+}
+
+.card-footer .btn-outline-primary {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+    border: 1px solid #007bff;
+    color: #007bff;
+    transition: all 0.3s ease;
+}
+
+.card-footer .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.card-footer .text-muted {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* Comment Section */
+section .card {
+    margin-top: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+section .card-body {
+    padding: 1.5rem;
+}
+
+section .d-flex {
+    margin-bottom: 1.5rem;
+}
+
+section .rounded-circle {
+    border: 2px solid #ddd;
+}
+
+section h6.text-primary {
+    font-weight: bold;
+    color: #007bff;
+}
+
+section .text-muted {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+section .form-outline textarea {
+    width: 100%;
+    resize: none;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 0.75rem;
+    transition: border-color 0.3s;
+}
+
+section .form-outline textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+section .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+section .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    section .d-flex {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    section .form-outline textarea {
+        margin-top: 1rem;
+    }
+}
+
+</style>
+
+
+{% endblock content %}
+
+{% block js %}
+
+<script>
+  
+  $(document).on('submit','#like-form',function(e){
+      e.preventDefault();
+      const postId = this.getAttribute("data-post-id");
+      const likeIcon = document.getElementById("like-icon");            
+          $.ajax({
+              type:'POST',
+              url:"{% url 'post_like' %}",
+              data: {
+                  csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken]").val(),
+                  post_id : postId
+              },
+              success: function(data){
+                  $("#like-count").text(`${data.likes_count} Likes`);
+              if (data.liked) {
+                likeIcon.classList.remove("far"); // Solid heart (liked)
+                likeIcon.classList.add("fas");   // Regular heart (not liked)
+            } else {
+                likeIcon.classList.remove("fas"); // Regular heart (not liked)
+                likeIcon.classList.add("far");   // Solid heart (liked)
+            }
+
+
+              },
+          })
+      
+  });
+
+  // ajax for comments
+
+  $(document).on('submit','#comment-form',function(e){
+      e.preventDefault();
+      const postId = this.getAttribute("data-post-id-comment");  
+      console.log("enter")
+      console.log(postId)         
+          $.ajax({
+              type:'POST',
+              url:"{% url 'post_comment' %}",
+              data: {
+                  csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken]").val(),
+                  post_id : postId,
+                  body : $("#body-form").val()
+              },
+              success: function(data){
+                const commentHtml = `
+                    <div class="d-flex flex-start align-items-center">
+                        <img class="rounded-circle shadow-1-strong me-3"
+                            src="${data.profile_image_url}" alt="avatar" width="60" height="60" />
+                        <div>
+                            <h6 class="fw-bold text-primary mb-1">${data.username}</h6>
+                            <p class="text-muted small mb-0">${data.created_at}</p>
+                        </div>
+                    </div>
+                    <p class="mt-3 mb-4 pb-2">${data.body}</p>
+                `;
+
+                // Find the comments section container
+                const commentsSection = document.querySelector("#comments-section .card-body");
+
+                // Insert the new comment at the top
+                commentsSection.insertAdjacentHTML("beforebegin", commentHtml);
+
+                // Clear the comment input field
+                document.getElementById("body-form").value = "";
+
+
+
+              },
+          })
+      
+  });
+
+
+</script>  
+
+{% endblock js %}
+
+
+
+   

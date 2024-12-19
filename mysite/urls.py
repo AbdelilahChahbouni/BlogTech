@@ -6,11 +6,12 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-     path('grappelli/', include('grappelli.urls')),
+    path('grappelli/', include('grappelli.urls')),
     path('panel/', admin.site.urls),
     path('account/' , include("account.urls")),
     path("" , include('blog.urls')),
     path("blog/" , include('blog.urls')),
+    path("api/" , include("api.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

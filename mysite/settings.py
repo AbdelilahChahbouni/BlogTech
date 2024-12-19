@@ -43,6 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
     'storages',
+    'rest_framework',
+    'api',
+
+
 ]
 
 MIDDLEWARE = [
@@ -183,26 +187,26 @@ EMAIL_USE_SSL = False
 
 
 # AWS S3 Configuration
-AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
-AWS_S3_REGION_NAME = 'us-east-1' 
-AWS_S3_CUSTOM_DOMAIN = "https://bk-s3-st.s3.us-east-1.amazonaws.com"
-AWS_S3_FILE_OVERWRITE = False
+# AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
+# AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+# AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
+# AWS_S3_REGION_NAME = 'us-east-1' 
+# AWS_S3_CUSTOM_DOMAIN = "https://bk-s3-st.s3.us-east-1.amazonaws.com"
+# AWS_S3_FILE_OVERWRITE = False
 
 
-STORAGES = {
+# STORAGES = {
 
-    # Media file (image) management  
-    "default": {
-        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
-    },
+#     # Media file (image) management  
+#     "default": {
+#         "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+#     },
    
-    # CSS and JS file management
-    "staticfiles": {
-        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
-    },
-}
+#     # CSS and JS file management
+#     "staticfiles": {
+#         "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+#     },
+# }
 
 
 

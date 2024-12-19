@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render , get_object_or_404
 from .serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -38,6 +38,39 @@ def post_details_update_delete(request , pk):
     elif request.method == "DELETE":
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['POST'])
+def post_like(request ,pk):
+    post = get_object_or_404(Post , id=pk)
+    if post.likes.filter(id = request.user.id).exists():
+        post.likes.remove(request.user)
+        liked= False
+    else:
+        post.likes.add(request.user)
+        liked = True
+    return Response({'liked':liked , 'likes_count':post.likes_count()})
+
+
+@api_view(['GET' , 'POST'])
+def comment_list_create(request , post_id ):
+    post = get_object_or_404(Post , id = post_id)
+    if request.method == "GET":
+        comments = post.comments_post
+        # comments = Comment.objects.filter(post=post)
+        print(comments)
+        serializer = CommentSerializer(comments , many=True)
+        return Response(serializer.data , status=status.HTTP_200_OK)
+    elif request.method == "POST":
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(post = post , user = request.user)
+            return Response({'message':'comment created'},serializer.data)
+        return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
 
 
 

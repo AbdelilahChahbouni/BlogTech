@@ -103,7 +103,10 @@ DATABASES = {
     }
 }
 
-
+# REST_FRAMEWORK = {
+#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+#     'PAGE_SIZE': 10,  # Number of items per page
+# }
 
 
 
@@ -181,9 +184,11 @@ EMAIL_BACKENDS = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST_USER = "dev4testemail@gmail.com"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_PASSWORD = 'dgp%%900@@'
+EMAIL_HOST_PASSWORD = 'fsfe uibc kjfb uwbu '
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 # AWS S3 Configuration

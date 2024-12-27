@@ -153,9 +153,9 @@ def post_comment(request):
 
 
 
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
-from .models import Post
+# from django.http import JsonResponse
+# from django.contrib.auth.decorators import login_required
+# from .models import Post
 
 # @login_required
 # def post_like(request, post_id):
@@ -193,7 +193,6 @@ from .models import Post
 @login_required
 def post_like(request):
     if request.method =="POST":
-        print("inside")
         post_id = request.POST.get('post_id')
         post = get_object_or_404(Post , id = post_id )
         if post.likes.filter(id = request.user.id).exists():
